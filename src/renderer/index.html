@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuickLeague — Rocket League Quick Chat Studio</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    
+    <!-- Top Toolbar -->
+    <header class="toolbar">
+      <div class="logo-area">
+        <span class="app-title">QuickLeague</span>
+        <span class="version-tag">v1.0</span>
+      </div>
+
+      <div class="actions-area">
+        <button id="btn-import" class="btn btn-secondary">
+          <span class="icon">📥</span> Import Pack
+        </button>
+        <button id="btn-export" class="btn btn-secondary">
+          <span class="icon">📤</span> Export Pack
+        </button>
+        <div class="divider"></div>
+        <button id="btn-new-category" class="btn btn-primary">
+          + New Category
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="workspace">
+      
+      <!-- Left Sidebar: Categories Navigation -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <span class="sidebar-title">Categories</span>
+          <span id="category-count" class="badge">4</span>
+        </div>
+
+        <div id="category-list" class="category-nav">
+          <!-- Dynamically populated -->
+        </div>
+
+        <!-- Mode Toggle at bottom -->
+        <div class="sidebar-footer">
+          <div class="footer-label">Overlay HUD Style</div>
+          <div class="hud-mode-toggle">
+            <button id="mode-corner" class="toggle-btn active">Corner (0–9)</button>
+            <button id="mode-radial" class="toggle-btn">Radial (4-Way)</button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Main Panel: Category Editor -->
+      <main class="editor">
+        
+        <!-- Category Title & Controls -->
+        <div class="category-header">
+          <div class="title-group">
+            <input type="text" id="category-name-input" class="category-title-input" placeholder="Category Name" />
+            <div class="category-meta" id="category-meta-text">Numpad 1 activates this category in match.</div>
+          </div>
+
+          <div class="category-controls">
+            <div class="control-item">
+              <label for="channel-select">Send to:</label>
+              <select id="channel-select" class="form-select">
+                <option value="team">Team Chat Only (Y)</option>
+                <option value="all">All Chat (T)</option>
+              </select>
+            </div>
+
+            <div class="control-item">
+              <label for="hotkey-btn">Trigger:</label>
+              <button id="hotkey-btn" class="hotkey-badge">Numpad 1</button>
+            </div>
+
+            <button id="btn-delete-category" class="btn btn-danger" title="Delete Category">
+              🗑️
+            </button>
+          </div>
+        </div>
+
+        <!-- Big Key 0: Random Pool Card -->
+        <div class="random-pool-card">
+          <div class="key-indicator">NUM 0</div>
+          <div class="pool-content">
+            <div class="pool-header">
+              <span class="pool-title">BIG THUMB KEY • SENDS RANDOM PHRASE FROM POOL</span>
+              <button id="btn-add-pool-phrase" class="btn btn-tiny">+ Add Phrase</button>
+            </div>
+            <div id="pool-chips" class="pool-chips-list">
+              <!-- Dynamically populated chips -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Specific Phrases Section (1-9) -->
+        <div class="section-label">Specific Phrases (Numpad 1–9)</div>
+        <div id="slots-editor" class="slots-editor-list">
+          <!-- Dynamically populated slots -->
+        </div>
+
+      </main>
+
+    </div>
+
+    <!-- Toast Notification Banner -->
+    <div id="toast" class="toast hidden"></div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

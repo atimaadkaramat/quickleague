@@ -1,0 +1,487 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: #121316;
+  color: #e2e4e9;
+  user-select: none;
+  overflow: hidden;
+  height: 100vh;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* ================= Toolbar ================= */
+.toolbar {
+  background: #181a1f;
+  border-bottom: 1px solid #282a32;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #ffffff;
+  letter-spacing: -0.2px;
+}
+
+.version-tag {
+  color: #0088ff;
+  font-weight: 600;
+  font-size: 0.75rem;
+  background: rgba(0, 136, 255, 0.12);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.actions-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.divider {
+  width: 1px;
+  height: 18px;
+  background: #282a32;
+  margin: 0 4px;
+}
+
+/* ================= Buttons ================= */
+.btn {
+  border: none;
+  outline: none;
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.btn-primary {
+  background: #0088ff;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background: #0077e6;
+}
+
+.btn-secondary {
+  background: #23262d;
+  border: 1px solid #323640;
+  color: #d0d3dc;
+}
+
+.btn-secondary:hover {
+  background: #2b2f38;
+  color: #ffffff;
+}
+
+.btn-danger {
+  background: #2a1b1e;
+  border: 1px solid #4a282d;
+  color: #ff6b6b;
+  padding: 6px 10px;
+}
+
+.btn-danger:hover {
+  background: #3d2025;
+}
+
+.btn-tiny {
+  background: #232c3d;
+  border: 1px solid #334460;
+  color: #0088ff;
+  font-size: 0.72rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.btn-tiny:hover {
+  background: #2b3850;
+}
+
+/* ================= Workspace Layout ================= */
+.workspace {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ================= Sidebar ================= */
+.sidebar {
+  background: #14161a;
+  border-right: 1px solid #23252b;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.sidebar-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #6b707e;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.badge {
+  background: #21242c;
+  color: #8c909e;
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+
+.category-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.category-nav-item {
+  color: #9da2af;
+  padding: 9px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+.category-nav-item:hover {
+  background: #1c1e24;
+  color: #ffffff;
+}
+
+.category-nav-item.active {
+  background: #21242c;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.category-nav-hotkey {
+  background: #18191f;
+  border: 1px solid #2a2d36;
+  color: #0088ff;
+  font-size: 0.72rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid #23252b;
+}
+
+.footer-label {
+  font-size: 0.72rem;
+  color: #6b707e;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.hud-mode-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  background: #1a1c22;
+  padding: 3px;
+  border-radius: 6px;
+}
+
+.toggle-btn {
+  background: transparent;
+  color: #8c909e;
+  border: none;
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+.toggle-btn.active {
+  background: #282b34;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* ================= Editor Main Panel ================= */
+.editor {
+  background: #121316;
+  padding: 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #23252b;
+  padding-bottom: 16px;
+}
+
+.category-title-input {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  outline: none;
+  border-radius: 4px;
+  padding: 2px 4px;
+  margin-left: -4px;
+  width: 320px;
+}
+
+.category-title-input:hover,
+.category-title-input:focus {
+  border-color: #323640;
+  background: #181a1f;
+}
+
+.category-meta {
+  color: #717684;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+.category-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.control-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: #8c909e;
+}
+
+.form-select {
+  background: #1a1c22;
+  border: 1px solid #2d303a;
+  color: #ffffff;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.hotkey-badge {
+  background: #1a1c22;
+  border: 1px solid #2d303a;
+  color: #0088ff;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-family: monospace;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ================= Random Pool Card ================= */
+.random-pool-card {
+  background: #1a1f29;
+  border: 1px solid rgba(0, 136, 255, 0.25);
+  border-radius: 8px;
+  padding: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.key-indicator {
+  background: #0088ff;
+  color: #ffffff;
+  font-weight: 800;
+  width: 50px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-family: monospace;
+  flex-shrink: 0;
+}
+
+.pool-content {
+  flex: 1;
+}
+
+.pool-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.pool-title {
+  font-size: 0.78rem;
+  color: #0088ff;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.pool-chips-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pool-chip {
+  background: #111317;
+  border: 1px solid #252830;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  color: #9da2af;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chip-remove {
+  color: #6b707e;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.chip-remove:hover {
+  color: #ff6b6b;
+}
+
+/* ================= Phrase Slots List ================= */
+.section-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #6b707e;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.slots-editor-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.slot-item {
+  background: #17191e;
+  border: 1px solid #252830;
+  border-radius: 6px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.slot-num-badge {
+  background: #23262f;
+  color: #9da2af;
+  font-weight: 700;
+  width: 26px;
+  height: 26px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-family: monospace;
+  flex-shrink: 0;
+}
+
+.slot-input {
+  flex: 1;
+  background: #0f1013;
+  border: 1px solid #282a32;
+  color: #f0f2f5;
+  padding: 7px 10px;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  outline: none;
+}
+
+.slot-input:focus {
+  border-color: #0088ff;
+}
+
+.char-counter {
+  font-size: 0.7rem;
+  color: #6b707e;
+  font-family: monospace;
+  width: 45px;
+  text-align: right;
+}
+
+/* ================= Toast Notification ================= */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #1f293d;
+  border: 1px solid #0088ff;
+  color: #ffffff;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  transition: opacity 0.2s ease;
+  z-index: 1000;
+}
+
+.toast.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
