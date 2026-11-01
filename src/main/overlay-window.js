@@ -24,6 +24,7 @@ class OverlayWindow {
       skipTaskbar: true,
       hasShadow: false,
       resizable: false,
+      show: false,
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: false
@@ -31,6 +32,9 @@ class OverlayWindow {
     });
 
     this.window.setAlwaysOnTop(true, 'screen-saver');
+    if (typeof this.window.setVisibleOnAllWorkspaces === 'function') {
+      this.window.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+    }
     this.window.setIgnoreMouseEvents(true, { forward: true });
 
     const overlayHtmlPath = path.join(__dirname, '..', 'overlay', 'overlay.html');
@@ -50,6 +54,9 @@ class OverlayWindow {
     }
 
     this.visible = true;
+    this.window.showInactive();
+    this.window.setAlwaysOnTop(true, 'screen-saver');
+
     this.window.webContents.send('hud:show', {
       category,
       hudMode,
@@ -63,6 +70,9 @@ class OverlayWindow {
     }
 
     this.visible = true;
+    this.window.showInactive();
+    this.window.setAlwaysOnTop(true, 'screen-saver');
+
     this.window.webContents.send('hud:cooldown', {
       remainingMs
     });
@@ -72,6 +82,11 @@ class OverlayWindow {
     if (this.window && !this.window.isDestroyed()) {
       this.visible = false;
       this.window.webContents.send('hud:hide');
+      setTimeout(() => {
+        if (!this.visible && this.window && !this.window.isDestroyed()) {
+          this.window.hide();
+        }
+      }, 200);
     }
   }
 

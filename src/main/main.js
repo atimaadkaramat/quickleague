@@ -1,5 +1,7 @@
-const { app, BrowserWindow, ipcMain, dialog, globalShortcut } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('node:path');
+const fs = require('node:fs');
+const { spawn } = require('node:child_process');
 const { ConfigManager } = require('./config-manager');
 const { OverlayWindow } = require('./overlay-window');
 const { StateMachine } = require('./state-machine');
@@ -14,6 +16,7 @@ let stateMachine = null;
 let rateLimiter = null;
 let inputSimulator = null;
 let windowMonitor = null;
+let hookProcess = null;
 
 function createMainWindow() {
   mainWindow = new BrowserWindow({
@@ -36,42 +39,29 @@ function createMainWindow() {
   });
 }
 
-function registerNumpadHotkeys() {
-  globalShortcut.unregisterAll();
+function startKeyboardHook() {
+  const hookExePath = path.join(__dirname, 'quickleague-hook.exe');
 
-  // Register Numpad 0 through 9
-  const numpadKeys = [
-    'num0', 'num1', 'num2', 'num3', 'num4',
-    'num5', 'num6', 'num7', 'num8', 'num9'
-  ];
-
-  numpadKeys.forEach((key, index) => {
+  if (fs.existsSync(hookExePath)) {
     try {
-      globalShortcut.register(key, () => {
-        handleTriggerKey(`Numpad${index}`);
-      });
-    } catch {
-      // Hotkey conflict or unsupported in environment
-    }
-  });
-}
+      hookProcess = spawn(hookExePath, [], { windowsHide: true });
 
-function setEscapeListener(enable) {
-  if (enable) {
-    try {
-      globalShortcut.register('Escape', () => {
-        if (stateMachine && stateMachine.getState() === 'PRIMED') {
-          handleTriggerKey('Escape');
+      hookProcess.stdout.on('data', (data) => {
+        const lines = data.toString().split('\n');
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (trimmed.startsWith('KEY:')) {
+            const keyName = trimmed.substring(4);
+            handleTriggerKey(keyName);
+          }
         }
       });
-    } catch {
-      // Ignore
-    }
-  } else {
-    try {
-      globalShortcut.unregister('Escape');
-    } catch {
-      // Ignore
+
+      hookProcess.on('error', (err) => {
+        console.error('Keyboard hook error:', err);
+      });
+    } catch (e) {
+      console.error('Failed to spawn hook:', e);
     }
   }
 }
@@ -79,27 +69,17 @@ function setEscapeListener(enable) {
 async function handleTriggerKey(keyName) {
   if (!stateMachine) return;
 
-  // Only trigger if Rocket League is active or if testing
-  const isGameActive = windowMonitor ? windowMonitor.isRocketLeagueActive() : true;
-  if (!isGameActive && stateMachine.getState() === 'IDLE') {
-    return;
-  }
-
   const action = stateMachine.handleKey(keyName);
 
   if (action.type === 'SHOW_HUD') {
-    setEscapeListener(true);
     if (overlayWindow) {
       overlayWindow.showPrimedCategory(action.category, action.hudMode, stateMachine.autoDismissMs);
     }
   } else if (action.type === 'HIDE_HUD') {
-    setEscapeListener(false);
     if (overlayWindow) {
       overlayWindow.hide();
     }
   } else if (action.type === 'SEND_CHAT') {
-    setEscapeListener(false);
-
     // Rate Limiter Check (Rocket League Anti-Spam Cooldown Guard)
     if (rateLimiter && !rateLimiter.canSend()) {
       const remainingMs = rateLimiter.getRemainingCooldown();
@@ -138,7 +118,6 @@ app.whenReady().then(() => {
     autoDismissMs: (config.autoDismissSeconds || 3) * 1000,
     onStateChange: (change) => {
       if (change.state === 'IDLE') {
-        setEscapeListener(false);
         if (overlayWindow) {
           overlayWindow.hide();
         }
@@ -146,7 +125,7 @@ app.whenReady().then(() => {
     }
   });
 
-  registerNumpadHotkeys();
+  startKeyboardHook();
   createMainWindow();
 
   app.on('activate', () => {
@@ -157,7 +136,14 @@ app.whenReady().then(() => {
 });
 
 app.on('will-quit', () => {
-  globalShortcut.unregisterAll();
+  if (hookProcess) {
+    try {
+      hookProcess.kill();
+    } catch {
+      // Ignore
+    }
+    hookProcess = null;
+  }
 });
 
 app.on('window-all-closed', () => {
