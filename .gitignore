@@ -4,10 +4,8 @@
 # Node / Web dependencies
 node_modules/
 dist/
+release/
 .vite/
-
-# Rust / Tauri build artifacts
-src-tauri/target/
 
 # OS and Editor files
 .DS_Store
@@ -15,6 +13,3 @@ Thumbs.db
 *.log
 .vscode/
 .idea/
-
-release/
-dist/

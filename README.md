@@ -42,8 +42,9 @@ Rocket League does not natively permit custom quick-chat sentences. Technical pl
 ### Option 1: Standalone Portable Exe (Recommended)
 1. Download `QuickLeague-Portable-1.0.0.exe` from the Releases page.
 2. Double-click to launch (no installation or admin rights required).
-3. Customize your categories or use the built-in starter phrases.
-4. Launch Rocket League and tap `Numpad 1` to open your quick chat menu!
+3. **Important In-Game Display Setting**: In Rocket League, go to **Settings ➡️ Video** and ensure **Display Mode** is set to **`Borderless`** (or `Windowed`). This allows the transparent in-game HUD overlay to render smoothly over the game.
+4. Customize your categories or use the built-in starter phrases.
+5. In a match, tap `Numpad 1` to open your quick chat menu!
 
 ### Option 2: Running from Source
 Prerequisites: [Node.js](https://nodejs.org/) (v18+)
