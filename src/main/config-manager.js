@@ -56,6 +56,23 @@ class ConfigManager {
     if (!config || typeof config !== 'object') {
       throw new Error('Invalid config object');
     }
+
+    // Validate phrases in all categories
+    if (Array.isArray(config.categories)) {
+      for (const cat of config.categories) {
+        if (Array.isArray(cat.slots)) {
+          for (const s of cat.slots) {
+            if (s.text) this.validatePhrase(s.text);
+          }
+        }
+        if (Array.isArray(cat.randomPool)) {
+          for (const phrase of cat.randomPool) {
+            this.validatePhrase(phrase);
+          }
+        }
+      }
+    }
+
     this.ensureDirectoryExists(this.configPath);
     fs.writeFileSync(this.configPath, JSON.stringify(config, null, 2), 'utf8');
   }
@@ -89,12 +106,27 @@ class ConfigManager {
       throw new Error(`Pack file not found: ${packPath}`);
     }
 
-    const raw = fs.readFileSync(packPath, 'utf8');
-    const pack = JSON.parse(raw);
+    let pack;
+    try {
+      const raw = fs.readFileSync(packPath, 'utf8');
+      pack = JSON.parse(raw);
+    } catch (err) {
+      throw new Error(`Invalid JSON in pack file: ${err.message}`);
+    }
 
-    if (pack.format !== 'quickleague-pack' || !pack.category) {
+    if (!pack || pack.format !== 'quickleague-pack' || !pack.category) {
       throw new Error('Invalid .rlchat pack file format');
     }
+
+    // Validate phrases
+    const slots = (pack.category.slots || []).map((s) => ({
+      slot: s.slot,
+      text: this.validatePhrase((s.text || '').slice(0, MAX_PHRASE_LENGTH))
+    }));
+
+    const randomPool = (pack.category.randomPool || []).map((p) =>
+      this.validatePhrase((p || '').slice(0, MAX_PHRASE_LENGTH))
+    );
 
     const config = this.loadConfig();
     const newCategory = {
@@ -102,8 +134,8 @@ class ConfigManager {
       name: `${pack.category.name} (Imported)`,
       channel: pack.category.channel || 'all',
       hotkey: `Numpad${(config.categories.length % 9) + 1}`,
-      slots: pack.category.slots || [],
-      randomPool: pack.category.randomPool || []
+      slots,
+      randomPool
     };
 
     config.categories.push(newCategory);

@@ -36,7 +36,7 @@ function createMainWindow() {
   });
 }
 
-function registerGlobalHotkeys() {
+function registerNumpadHotkeys() {
   globalShortcut.unregisterAll();
 
   // Register Numpad 0 through 9
@@ -54,16 +54,25 @@ function registerGlobalHotkeys() {
       // Hotkey conflict or unsupported in environment
     }
   });
+}
 
-  // Register Escape for HUD dismissal
-  try {
-    globalShortcut.register('Escape', () => {
-      if (stateMachine && stateMachine.getState() === 'PRIMED') {
-        handleTriggerKey('Escape');
-      }
-    });
-  } catch {
-    // Ignore
+function setEscapeListener(enable) {
+  if (enable) {
+    try {
+      globalShortcut.register('Escape', () => {
+        if (stateMachine && stateMachine.getState() === 'PRIMED') {
+          handleTriggerKey('Escape');
+        }
+      });
+    } catch {
+      // Ignore
+    }
+  } else {
+    try {
+      globalShortcut.unregister('Escape');
+    } catch {
+      // Ignore
+    }
   }
 }
 
@@ -79,20 +88,29 @@ async function handleTriggerKey(keyName) {
   const action = stateMachine.handleKey(keyName);
 
   if (action.type === 'SHOW_HUD') {
+    setEscapeListener(true);
     if (overlayWindow) {
       overlayWindow.showPrimedCategory(action.category, action.hudMode, stateMachine.autoDismissMs);
     }
   } else if (action.type === 'HIDE_HUD') {
+    setEscapeListener(false);
     if (overlayWindow) {
       overlayWindow.hide();
     }
   } else if (action.type === 'SEND_CHAT') {
-    if (overlayWindow) {
-      overlayWindow.hide();
+    setEscapeListener(false);
+
+    // Rate Limiter Check (Rocket League Anti-Spam Cooldown Guard)
+    if (rateLimiter && !rateLimiter.canSend()) {
+      const remainingMs = rateLimiter.getRemainingCooldown();
+      if (overlayWindow) {
+        overlayWindow.showCooldown(remainingMs);
+      }
+      return;
     }
 
-    if (rateLimiter && !rateLimiter.canSend()) {
-      return;
+    if (overlayWindow) {
+      overlayWindow.hide();
     }
 
     if (rateLimiter) {
@@ -119,13 +137,16 @@ app.whenReady().then(() => {
   stateMachine = new StateMachine(config, {
     autoDismissMs: (config.autoDismissSeconds || 3) * 1000,
     onStateChange: (change) => {
-      if (change.state === 'IDLE' && overlayWindow) {
-        overlayWindow.hide();
+      if (change.state === 'IDLE') {
+        setEscapeListener(false);
+        if (overlayWindow) {
+          overlayWindow.hide();
+        }
       }
     }
   });
 
-  registerGlobalHotkeys();
+  registerNumpadHotkeys();
   createMainWindow();
 
   app.on('activate', () => {
@@ -157,6 +178,11 @@ ipcMain.handle('config:save', (event, updatedConfig) => {
       stateMachine.updateConfig(updatedConfig);
     }
   }
+  return { success: true };
+});
+
+ipcMain.handle('gamepad:trigger', (event, keyName) => {
+  handleTriggerKey(keyName);
   return { success: true };
 });
 

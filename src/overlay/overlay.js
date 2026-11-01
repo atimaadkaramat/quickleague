@@ -1,8 +1,12 @@
 const { ipcRenderer } = require('electron');
 
 let countdownInterval = null;
+let cooldownInterval = null;
 
 function renderCategory(category, hudMode = 'corner', timeoutMs = 3000) {
+  // Hide cooldown if showing
+  document.getElementById('cooldown-banner').classList.add('hidden');
+
   const cornerBox = document.getElementById('corner-box');
   const radialWheel = document.getElementById('radial-wheel');
 
@@ -69,11 +73,42 @@ function renderCategory(category, hudMode = 'corner', timeoutMs = 3000) {
   document.body.classList.remove('hidden');
 }
 
+function showCooldown(remainingMs) {
+  const cooldownBanner = document.getElementById('cooldown-banner');
+  const cooldownTime = document.getElementById('cooldown-time');
+  const cornerBox = document.getElementById('corner-box');
+  const radialWheel = document.getElementById('radial-wheel');
+
+  cornerBox.classList.add('hidden');
+  radialWheel.classList.add('hidden');
+  cooldownBanner.classList.remove('hidden');
+  document.body.classList.remove('hidden');
+
+  let remainingSec = (remainingMs / 1000).toFixed(1);
+  cooldownTime.textContent = `${remainingSec}s`;
+
+  if (cooldownInterval) clearInterval(cooldownInterval);
+  const startTime = Date.now();
+  cooldownInterval = setInterval(() => {
+    const elapsed = Date.now() - startTime;
+    const left = Math.max(0, (remainingMs - elapsed) / 1000);
+    cooldownTime.textContent = `${left.toFixed(1)}s`;
+    if (left <= 0) {
+      clearInterval(cooldownInterval);
+      hideHUD();
+    }
+  }, 100);
+}
+
 function hideHUD() {
   document.body.classList.add('hidden');
   if (countdownInterval) {
     clearInterval(countdownInterval);
     countdownInterval = null;
+  }
+  if (cooldownInterval) {
+    clearInterval(cooldownInterval);
+    cooldownInterval = null;
   }
 }
 
@@ -85,6 +120,10 @@ function escapeHtml(text) {
 
 ipcRenderer.on('hud:show', (event, data) => {
   renderCategory(data.category, data.hudMode, data.timeoutMs || 3000);
+});
+
+ipcRenderer.on('hud:cooldown', (event, data) => {
+  showCooldown(data.remainingMs || 3000);
 });
 
 ipcRenderer.on('hud:hide', () => {

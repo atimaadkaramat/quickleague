@@ -57,6 +57,17 @@ class OverlayWindow {
     });
   }
 
+  showCooldown(remainingMs) {
+    if (!this.window || this.window.isDestroyed()) {
+      this.createWindow();
+    }
+
+    this.visible = true;
+    this.window.webContents.send('hud:cooldown', {
+      remainingMs
+    });
+  }
+
   hide() {
     if (this.window && !this.window.isDestroyed()) {
       this.visible = false;

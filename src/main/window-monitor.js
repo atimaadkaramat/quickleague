@@ -1,9 +1,11 @@
 const { execSync } = require('node:child_process');
+const path = require('node:path');
 
 class WindowMonitor {
   constructor(options = {}) {
     this.targetProcess = options.targetProcess || 'RocketLeague';
     this.mockActive = options.mockActive !== undefined ? options.mockActive : null;
+    this.scriptPath = path.join(__dirname, 'check-active.ps1');
   }
 
   setMockActive(val) {
@@ -12,6 +14,7 @@ class WindowMonitor {
 
   /**
    * Checks if Rocket League is currently the focused foreground window.
+   * Fail-closed: returns false if not active or detection fails.
    */
   isRocketLeagueActive() {
     if (this.mockActive !== null) {
@@ -19,36 +22,27 @@ class WindowMonitor {
     }
 
     if (process.platform !== 'win32') {
-      return true; // For testing on non-Windows
+      return false; // Fail closed on non-Windows
     }
 
     try {
-      const psCommand = `
-        Add-Type @"
-          using System;
-          using System.Runtime.InteropServices;
-          public class Win32 {
-            [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
-            [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
-          }
-"@
-        $hwnd = [Win32]::GetForegroundWindow()
-        $procId = 0
-        [Win32]::GetWindowThreadProcessId($hwnd, [ref]$procId) | Out-Null
-        if ($procId -gt 0) {
-          (Get-Process -Id $procId).ProcessName
+      const output = execSync(
+        `powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "${this.scriptPath}"`,
+        {
+          timeout: 800,
+          encoding: 'utf8',
+          windowsHide: true
         }
-      `;
+      ).trim();
 
-      const output = execSync(`powershell -NoProfile -Command "${psCommand.replace(/\n/g, ' ')}"`, {
-        timeout: 1000,
-        encoding: 'utf8'
-      }).trim();
+      if (!output) {
+        return false;
+      }
 
       return output.toLowerCase().includes(this.targetProcess.toLowerCase());
     } catch {
-      // Fallback: If check fails, default to true so hotkeys are not blocked if user is running borderless
-      return true;
+      // Fail closed to prevent typing into other applications
+      return false;
     }
   }
 }

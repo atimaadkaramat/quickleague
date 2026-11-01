@@ -29,6 +29,7 @@ async function init() {
   }
   renderUI();
   setupEventListeners();
+  setupGamepadPolling();
 }
 
 function showToast(message, duration = 2500) {
@@ -158,7 +159,7 @@ function setupEventListeners() {
     showToast('Overlay style set to Radial Wheel');
   });
 
-  // Slots input change
+  // Slots input change & paste limit detection
   slotsEditorEl.addEventListener('input', (e) => {
     if (e.target.classList.contains('slot-input')) {
       const slotNum = parseInt(e.target.dataset.slot, 10);
@@ -181,6 +182,15 @@ function setupEventListeners() {
     }
   });
 
+  slotsEditorEl.addEventListener('paste', (e) => {
+    if (e.target.classList.contains('slot-input')) {
+      const pastedData = (e.clipboardData || window.clipboardData).getData('text');
+      if (pastedData && pastedData.length > 120) {
+        showToast('Pasted text exceeds 120 characters and was truncated.');
+      }
+    }
+  });
+
   // Remove pool phrase
   poolChipsEl.addEventListener('click', (e) => {
     if (e.target.classList.contains('chip-remove')) {
@@ -198,10 +208,11 @@ function setupEventListeners() {
   btnAddPoolPhrase.addEventListener('click', () => {
     const phrase = prompt('Enter a phrase for the random pool (max 120 chars):');
     if (phrase && phrase.trim().length > 0) {
+      const trimmed = phrase.trim().slice(0, 120);
       const activeCat = currentConfig.categories.find((c) => c.id === activeCategoryId);
       if (activeCat) {
         if (!activeCat.randomPool) activeCat.randomPool = [];
-        activeCat.randomPool.push(phrase.trim().slice(0, 120));
+        activeCat.randomPool.push(trimmed);
         renderUI();
         autoSave();
         showToast('Phrase added to pool');
@@ -255,10 +266,12 @@ function setupEventListeners() {
     const res = await ipcRenderer.invoke('pack:export', activeCat.name);
     if (res.success) {
       showToast(`Exported "${activeCat.name}" pack successfully!`);
+    } else if (res.error) {
+      alert(`Export Failed: ${res.error}`);
     }
   });
 
-  // Import
+  // Import with Error Handling
   btnImport.addEventListener('click', async () => {
     const res = await ipcRenderer.invoke('pack:import');
     if (res.success && res.category) {
@@ -266,8 +279,51 @@ function setupEventListeners() {
       activeCategoryId = res.category.id;
       renderUI();
       showToast(`Imported "${res.category.name}" successfully!`);
+    } else if (res.error) {
+      alert(`Import Failed: ${res.error}`);
     }
   });
+}
+
+// ================= Gamepad Support (R3 + D-Pad) =================
+let lastButtonState = {};
+
+function setupGamepadPolling() {
+  function pollGamepad() {
+    const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+    for (const gp of gamepads) {
+      if (!gp) continue;
+
+      // Standard Gamepad Mapping:
+      // Button 11: Right Stick Click (R3)
+      // Button 12: D-Pad Up
+      // Button 13: D-Pad Down
+      // Button 14: D-Pad Left
+      // Button 15: D-Pad Right
+      const r3Pressed = gp.buttons[11] && gp.buttons[11].pressed;
+      if (r3Pressed) {
+        if (gp.buttons[12] && gp.buttons[12].pressed && !lastButtonState.up) {
+          ipcRenderer.invoke('gamepad:trigger', 'Numpad1');
+        } else if (gp.buttons[15] && gp.buttons[15].pressed && !lastButtonState.right) {
+          ipcRenderer.invoke('gamepad:trigger', 'Numpad2');
+        } else if (gp.buttons[14] && gp.buttons[14].pressed && !lastButtonState.left) {
+          ipcRenderer.invoke('gamepad:trigger', 'Numpad3');
+        } else if (gp.buttons[13] && gp.buttons[13].pressed && !lastButtonState.down) {
+          ipcRenderer.invoke('gamepad:trigger', 'Numpad4');
+        }
+      }
+
+      lastButtonState = {
+        up: gp.buttons[12] && gp.buttons[12].pressed,
+        down: gp.buttons[13] && gp.buttons[13].pressed,
+        left: gp.buttons[14] && gp.buttons[14].pressed,
+        right: gp.buttons[15] && gp.buttons[15].pressed
+      };
+    }
+    requestAnimationFrame(pollGamepad);
+  }
+
+  requestAnimationFrame(pollGamepad);
 }
 
 document.addEventListener('DOMContentLoaded', init);

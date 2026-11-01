@@ -22,6 +22,45 @@ body.hidden {
   padding: 10px;
 }
 
+/* ================= Cooldown Warning Banner ================= */
+.cooldown-banner {
+  background: rgba(36, 16, 20, 0.95);
+  border: 1.5px solid #ff4444;
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 320px;
+  box-shadow: 0 0 20px rgba(255, 68, 68, 0.4);
+  backdrop-filter: blur(8px);
+  margin-bottom: 8px;
+}
+
+.cooldown-icon {
+  font-size: 1.4rem;
+}
+
+.cooldown-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #ff6b6b;
+  text-transform: uppercase;
+}
+
+.cooldown-sub {
+  font-size: 0.7rem;
+  color: #a0aec0;
+}
+
+.cooldown-time {
+  margin-left: auto;
+  font-family: monospace;
+  font-size: 1rem;
+  font-weight: 900;
+  color: #ffcc00;
+}
+
 /* ================= Corner Box Style ================= */
 .hud-box {
   background: rgba(14, 18, 26, 0.92);
