@@ -13,8 +13,8 @@ class OverlayWindow {
     }
 
     this.window = new BrowserWindow({
-      width: 420,
-      height: 480,
+      width: 440,
+      height: 500,
       x: 30,
       y: 30,
       transparent: true,
@@ -25,13 +25,14 @@ class OverlayWindow {
       hasShadow: false,
       resizable: false,
       show: false,
+      backgroundColor: '#00000000',
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: false
       }
     });
 
-    this.window.setAlwaysOnTop(true, 'screen-saver');
+    this.window.setAlwaysOnTop(true, 'screen-saver', 1);
     if (typeof this.window.setVisibleOnAllWorkspaces === 'function') {
       this.window.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
     }
@@ -55,7 +56,8 @@ class OverlayWindow {
 
     this.visible = true;
     this.window.showInactive();
-    this.window.setAlwaysOnTop(true, 'screen-saver');
+    this.window.setAlwaysOnTop(true, 'screen-saver', 1);
+    this.window.moveTop();
 
     this.window.webContents.send('hud:show', {
       category,
@@ -71,7 +73,8 @@ class OverlayWindow {
 
     this.visible = true;
     this.window.showInactive();
-    this.window.setAlwaysOnTop(true, 'screen-saver');
+    this.window.setAlwaysOnTop(true, 'screen-saver', 1);
+    this.window.moveTop();
 
     this.window.webContents.send('hud:cooldown', {
       remainingMs
@@ -81,12 +84,7 @@ class OverlayWindow {
   hide() {
     if (this.window && !this.window.isDestroyed()) {
       this.visible = false;
-      this.window.webContents.send('hud:hide');
-      setTimeout(() => {
-        if (!this.visible && this.window && !this.window.isDestroyed()) {
-          this.window.hide();
-        }
-      }, 200);
+      this.window.hide();
     }
   }
 

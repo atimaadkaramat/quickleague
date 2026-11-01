@@ -10,12 +10,6 @@ body {
   overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   color: #ffffff;
-  transition: opacity 0.15s ease;
-}
-
-body.hidden {
-  opacity: 0;
-  pointer-events: none;
 }
 
 #hud-container {
@@ -63,7 +57,7 @@ body.hidden {
 
 /* ================= Corner Box Style ================= */
 .hud-box {
-  background: rgba(14, 18, 26, 0.92);
+  background: rgba(14, 18, 26, 0.94);
   border: 1.5px solid #0088ff;
   border-radius: 8px;
   width: 320px;
@@ -73,7 +67,7 @@ body.hidden {
 }
 
 .hud-header {
-  background: rgba(8, 12, 18, 0.85);
+  background: rgba(8, 12, 18, 0.9);
   border-bottom: 1px solid rgba(0, 136, 255, 0.4);
   padding: 8px 12px;
   display: flex;

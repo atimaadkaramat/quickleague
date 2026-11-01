@@ -69,8 +69,6 @@ function renderCategory(category, hudMode = 'corner', timeoutMs = 3000) {
       clearInterval(countdownInterval);
     }
   }, 1000);
-
-  document.body.classList.remove('hidden');
 }
 
 function showCooldown(remainingMs) {
@@ -82,7 +80,6 @@ function showCooldown(remainingMs) {
   cornerBox.classList.add('hidden');
   radialWheel.classList.add('hidden');
   cooldownBanner.classList.remove('hidden');
-  document.body.classList.remove('hidden');
 
   let remainingSec = (remainingMs / 1000).toFixed(1);
   cooldownTime.textContent = `${remainingSec}s`;
@@ -95,21 +92,9 @@ function showCooldown(remainingMs) {
     cooldownTime.textContent = `${left.toFixed(1)}s`;
     if (left <= 0) {
       clearInterval(cooldownInterval);
-      hideHUD();
+      ipcRenderer.send('hud:cooldown-finished');
     }
   }, 100);
-}
-
-function hideHUD() {
-  document.body.classList.add('hidden');
-  if (countdownInterval) {
-    clearInterval(countdownInterval);
-    countdownInterval = null;
-  }
-  if (cooldownInterval) {
-    clearInterval(cooldownInterval);
-    cooldownInterval = null;
-  }
 }
 
 function escapeHtml(text) {
@@ -124,8 +109,4 @@ ipcRenderer.on('hud:show', (event, data) => {
 
 ipcRenderer.on('hud:cooldown', (event, data) => {
   showCooldown(data.remainingMs || 3000);
-});
-
-ipcRenderer.on('hud:hide', () => {
-  hideHUD();
 });

@@ -19,6 +19,7 @@ const modeRadialBtn = document.getElementById('mode-radial');
 const btnImport = document.getElementById('btn-import');
 const btnExport = document.getElementById('btn-export');
 const btnNewCategory = document.getElementById('btn-new-category');
+const btnTestHud = document.getElementById('btn-test-hud');
 const toastEl = document.getElementById('toast');
 
 // ================= Initialization =================
@@ -124,6 +125,14 @@ function escapeHtml(text) {
 
 // ================= Event Listeners =================
 function setupEventListeners() {
+  // Test Overlay Button
+  if (btnTestHud) {
+    btnTestHud.addEventListener('click', () => {
+      ipcRenderer.invoke('hud:test');
+      showToast('Displaying overlay HUD for 4 seconds...');
+    });
+  }
+
   // Category Name change
   categoryNameInput.addEventListener('input', (e) => {
     const activeCat = currentConfig.categories.find((c) => c.id === activeCategoryId);
@@ -294,12 +303,6 @@ function setupGamepadPolling() {
     for (const gp of gamepads) {
       if (!gp) continue;
 
-      // Standard Gamepad Mapping:
-      // Button 11: Right Stick Click (R3)
-      // Button 12: D-Pad Up
-      // Button 13: D-Pad Down
-      // Button 14: D-Pad Left
-      // Button 15: D-Pad Right
       const r3Pressed = gp.buttons[11] && gp.buttons[11].pressed;
       if (r3Pressed) {
         if (gp.buttons[12] && gp.buttons[12].pressed && !lastButtonState.up) {

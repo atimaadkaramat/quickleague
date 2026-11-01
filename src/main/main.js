@@ -167,6 +167,24 @@ ipcMain.handle('config:save', (event, updatedConfig) => {
   return { success: true };
 });
 
+ipcMain.handle('hud:test', () => {
+  if (overlayWindow && configManager) {
+    const config = configManager.loadConfig();
+    const cat = config.categories[0];
+    overlayWindow.showPrimedCategory(cat, config.hudMode || 'corner', 4000);
+    setTimeout(() => {
+      if (overlayWindow) overlayWindow.hide();
+    }, 4000);
+  }
+  return { success: true };
+});
+
+ipcMain.on('hud:cooldown-finished', () => {
+  if (overlayWindow) {
+    overlayWindow.hide();
+  }
+});
+
 ipcMain.handle('gamepad:trigger', (event, keyName) => {
   handleTriggerKey(keyName);
   return { success: true };
