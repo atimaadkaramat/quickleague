@@ -1,5 +1,8 @@
 # 🚀 QuickLeague
 
+> **Custom Rocket League Quick Chat Desktop Utility**  
+> **Developed by Atimaad Karamat** ([@atimaadkaramat](https://github.com/atimaadkaramat))
+
 **QuickLeague** is an anti-ban-safe, customizable quick-chat desktop utility for **Rocket League**.
 
 Rocket League does not natively permit custom quick-chat sentences. Technical players previously automated this with private AutoHotkey scripts—pressing `T` or `Y`, typing sentences, and hitting `Enter`. **QuickLeague** brings this power to every player through a clean, dark-mode desktop interface: no scripting required.
@@ -80,5 +83,7 @@ npm run build:portable
 
 ---
 
-## 📄 License
-MIT License. Created by [atimaadkaramat](https://github.com/atimaadkaramat).
+## 📄 License & Credits
+
+Developed by **Atimaad Karamat** ([@atimaadkaramat](https://github.com/atimaadkaramat)).  
+Licensed under the [MIT License](LICENSE).

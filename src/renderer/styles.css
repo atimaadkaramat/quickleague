@@ -52,6 +52,13 @@ body {
   border-radius: 4px;
 }
 
+.creator-tag {
+  color: #8a8d98;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-left: 6px;
+}
+
 .actions-area {
   display: flex;
   align-items: center;

@@ -23,7 +23,7 @@
     "gaming",
     "desktop-utility"
   ],
-  "author": "atimaadkaramat",
+  "author": "Atimaad Karamat <https://github.com/atimaadkaramat>",
   "license": "MIT",
   "devDependencies": {
     "electron": "^34.2.0",
