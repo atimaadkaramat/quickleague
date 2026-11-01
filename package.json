@@ -1,7 +1,15 @@
 {
   "name": "quickleague",
   "version": "1.0.0",
-  "description": "Custom Rocket League Quick Chat Desktop Utility",
+  "description": "Custom Rocket League Quick Chat Desktop Utility with anti-ban safe input simulation and customizable chat packs.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atimaadkaramat/quickleague.git"
+  },
+  "bugs": {
+    "url": "https://github.com/atimaadkaramat/quickleague/issues"
+  },
+  "homepage": "https://github.com/atimaadkaramat/quickleague#readme",
   "main": "src/main/main.js",
   "scripts": {
     "start": "electron .",
