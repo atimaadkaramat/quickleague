@@ -1,0 +1,17 @@
+# Superpowers & Brainstorm artifacts
+.superpowers/
+
+# Node / Web dependencies
+node_modules/
+dist/
+.vite/
+
+# Rust / Tauri build artifacts
+src-tauri/target/
+
+# OS and Editor files
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
