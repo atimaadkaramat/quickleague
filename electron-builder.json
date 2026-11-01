@@ -3,7 +3,8 @@
   "productName": "QuickLeague",
   "copyright": "Copyright © 2026 atimaadkaramat",
   "directories": {
-    "output": "release"
+    "output": "release",
+    "buildResources": "build"
   },
   "files": [
     "src/**/*",
@@ -14,6 +15,7 @@
     "src/main/check-active.ps1"
   ],
   "win": {
+    "icon": "build/icon.ico",
     "signAndEditExecutable": false,
     "target": [
       {

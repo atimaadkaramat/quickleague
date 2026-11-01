@@ -19,11 +19,13 @@ let windowMonitor = null;
 let hookProcess = null;
 
 function createMainWindow() {
+  const iconPath = path.join(__dirname, '..', '..', 'build', 'icon.ico');
   mainWindow = new BrowserWindow({
     width: 960,
     height: 640,
     minWidth: 800,
     minHeight: 550,
+    icon: fs.existsSync(iconPath) ? iconPath : undefined,
     backgroundColor: '#121316',
     title: 'QuickLeague — Rocket League Quick Chat Studio',
     webPreferences: {
