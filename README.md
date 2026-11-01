@@ -1,11 +1,28 @@
 # 🚀 QuickLeague
 
+[![Release](https://img.shields.io/github/v/release/atimaadkaramat/quickleague?color=blue&style=flat-square)](https://github.com/atimaadkaramat/quickleague/releases)
+[![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=flat-square&logo=windows)](https://github.com/atimaadkaramat/quickleague)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
+[![Built with Electron](https://img.shields.io/badge/Built%20with-Electron-47848F?style=flat-square&logo=electron)](https://www.electronjs.org/)
+[![Anti-Ban Safe](https://img.shields.io/badge/Anti--Ban-Safe-brightgreen?style=flat-square)](#-anti-ban-guarantee)
+
 > **Custom Rocket League Quick Chat Desktop Utility**  
 > **Developed by Atimaad Karamat** ([@atimaadkaramat](https://github.com/atimaadkaramat))
 
 **QuickLeague** is an anti-ban-safe, customizable quick-chat desktop utility for **Rocket League**.
 
 Rocket League does not natively permit custom quick-chat sentences. Technical players previously automated this with private AutoHotkey scripts—pressing `T` or `Y`, typing sentences, and hitting `Enter`. **QuickLeague** brings this power to every player through a clean, dark-mode desktop interface: no scripting required.
+
+---
+
+## 📥 Download
+
+Download the latest version directly from the [**Releases Page**](https://github.com/atimaadkaramat/quickleague/releases/latest):
+
+| Package | Format | Description |
+|---|---|---|
+| **Portable (.exe)** | `QuickLeague-Portable-1.0.0.exe` | Zero installation, standalone executable. Put it anywhere and run. |
+| **Installer (.exe)** | `QuickLeague Setup 1.0.0.exe` | Standard Windows setup with desktop shortcut and uninstaller. |
 
 ---
 
