@@ -1,0 +1,24 @@
+{
+  "name": "quickleague",
+  "version": "1.0.0",
+  "description": "Custom Rocket League Quick Chat Desktop Utility",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/**/*.test.js",
+    "build:portable": "electron-builder --win portable",
+    "build:installer": "electron-builder --win nsis"
+  },
+  "keywords": [
+    "rocket-league",
+    "quick-chat",
+    "gaming",
+    "desktop-utility"
+  ],
+  "author": "atimaadkaramat",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^34.2.0",
+    "electron-builder": "^25.1.8"
+  }
+}
