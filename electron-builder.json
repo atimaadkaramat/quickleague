@@ -9,6 +9,10 @@
     "src/**/*",
     "package.json"
   ],
+  "asarUnpack": [
+    "src/main/quickleague-hook.exe",
+    "src/main/check-active.ps1"
+  ],
   "win": {
     "signAndEditExecutable": false,
     "target": [

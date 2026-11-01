@@ -4,6 +4,29 @@
   padding: 0;
 }
 
+/* Custom Dark Scrollbars to prevent native white bars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #121316;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #282a32;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3b3f4c;
+}
+
+::-webkit-scrollbar-corner {
+  background: #121316;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   background: #121316;

@@ -40,7 +40,8 @@ function createMainWindow() {
 }
 
 function startKeyboardHook() {
-  const hookExePath = path.join(__dirname, 'quickleague-hook.exe');
+  // In packaged builds, asar-unpacked files live at app.asar.unpacked/
+  const hookExePath = path.join(__dirname.replace('app.asar', 'app.asar.unpacked'), 'quickleague-hook.exe');
 
   if (fs.existsSync(hookExePath)) {
     try {

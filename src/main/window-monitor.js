@@ -5,7 +5,8 @@ class WindowMonitor {
   constructor(options = {}) {
     this.targetProcess = options.targetProcess || 'RocketLeague';
     this.mockActive = options.mockActive !== undefined ? options.mockActive : null;
-    this.scriptPath = path.join(__dirname, 'check-active.ps1');
+    // In packaged builds, asar-unpacked files live at app.asar.unpacked/
+    this.scriptPath = path.join(__dirname.replace('app.asar', 'app.asar.unpacked'), 'check-active.ps1');
   }
 
   setMockActive(val) {
