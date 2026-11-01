@@ -1,0 +1,210 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+body {
+  background: transparent;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: #ffffff;
+  transition: opacity 0.15s ease;
+}
+
+body.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#hud-container {
+  padding: 10px;
+}
+
+/* ================= Corner Box Style ================= */
+.hud-box {
+  background: rgba(14, 18, 26, 0.92);
+  border: 1.5px solid #0088ff;
+  border-radius: 8px;
+  width: 320px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), 0 0 12px rgba(0, 136, 255, 0.35);
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+
+.hud-header {
+  background: rgba(8, 12, 18, 0.85);
+  border-bottom: 1px solid rgba(0, 136, 255, 0.4);
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hud-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.hud-channel {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #00d2ff;
+  background: rgba(0, 210, 255, 0.12);
+  padding: 2px 6px;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+}
+
+.slots-container {
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-height: 290px;
+  overflow: hidden;
+}
+
+.slot-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  line-height: 1.3;
+}
+
+.key-badge {
+  color: #ffcc00;
+  font-weight: 800;
+  font-family: monospace;
+  font-size: 0.82rem;
+  min-width: 24px;
+}
+
+.slot-text {
+  color: #e2e8f0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Random Key (0) */
+.random-row {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 10px;
+  background: rgba(0, 136, 255, 0.08);
+}
+
+.random-badge {
+  color: #00d2ff;
+  background: rgba(0, 210, 255, 0.15);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+.random-text {
+  color: #00d2ff;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.hud-footer {
+  padding: 5px 10px 4px 10px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  color: #718096;
+  background: rgba(8, 12, 18, 0.95);
+}
+
+.countdown-bar {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  width: 100%;
+}
+
+.countdown-fill {
+  height: 100%;
+  background: #0088ff;
+  width: 100%;
+  transition: width 3s linear;
+}
+
+/* ================= Radial Wheel Style ================= */
+.hud-wheel {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  border: 2px dashed rgba(0, 210, 255, 0.7);
+  background: rgba(10, 15, 24, 0.9);
+  box-shadow: 0 0 25px rgba(0, 136, 255, 0.4);
+  margin: 10px;
+}
+
+.wheel-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #0f172a;
+  border: 2px solid #00d2ff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4px;
+}
+
+#wheel-title {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+#wheel-channel {
+  font-size: 0.58rem;
+  color: #00d2ff;
+  font-weight: 700;
+}
+
+.wheel-slice {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-size: 0.7rem;
+}
+
+.slice-key {
+  color: #ffcc00;
+  font-weight: 800;
+  font-size: 0.72rem;
+}
+
+.slice-label {
+  color: #e2e8f0;
+  max-width: 90px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.slice-up { top: 8px; left: 50%; transform: translateX(-50%); }
+.slice-down { bottom: 8px; left: 50%; transform: translateX(-50%); }
+.slice-left { left: 8px; top: 50%; transform: translateY(-50%); }
+.slice-right { right: 8px; top: 50%; transform: translateY(-50%); }
+
+.hidden {
+  display: none !important;
+}

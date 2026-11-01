@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QuickLeague HUD Overlay</title>
+  <link rel="stylesheet" href="overlay.css">
+</head>
+<body class="hidden">
+  <div id="hud-container">
+    
+    <!-- Corner Box Mode -->
+    <div id="corner-box" class="hud-box">
+      <div class="hud-header">
+        <div id="category-title" class="hud-title">CATEGORY</div>
+        <div id="channel-badge" class="hud-channel">TEAM (Y)</div>
+      </div>
+
+      <!-- Specific Slots 1 to 9 -->
+      <div id="slots-list" class="slots-container">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Big Key: Numpad 0 Random -->
+      <div id="random-slot" class="slot-row random-row">
+        <span class="key-badge random-badge">[0]</span>
+        <span class="slot-text random-text">Random Phrase</span>
+      </div>
+
+      <!-- Footer / Dismiss hints -->
+      <div class="hud-footer">
+        <span>[Esc] Cancel</span>
+        <span id="countdown-timer">3s</span>
+      </div>
+      <div class="countdown-bar">
+        <div id="countdown-progress" class="countdown-fill"></div>
+      </div>
+    </div>
+
+    <!-- Radial Wheel Mode -->
+    <div id="radial-wheel" class="hud-wheel hidden">
+      <div class="wheel-center">
+        <div id="wheel-title">CATEGORY</div>
+        <div id="wheel-channel">TEAM</div>
+      </div>
+      <div class="wheel-slice slice-up" id="slice-up">
+        <span class="slice-key">▲ 1</span>
+        <span class="slice-label" id="wheel-slot-1">Phrase 1</span>
+      </div>
+      <div class="wheel-slice slice-right" id="slice-right">
+        <span class="slice-key">► 2</span>
+        <span class="slice-label" id="wheel-slot-2">Phrase 2</span>
+      </div>
+      <div class="wheel-slice slice-left" id="slice-left">
+        <span class="slice-key">◄ 3</span>
+        <span class="slice-label" id="wheel-slot-3">Phrase 3</span>
+      </div>
+      <div class="wheel-slice slice-down" id="slice-down">
+        <span class="slice-key">▼ 0</span>
+        <span class="slice-label" id="wheel-slot-0">[Random]</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="overlay.js"></script>
+</body>
+</html>
